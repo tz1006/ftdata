@@ -13,10 +13,12 @@ from tools import *
 q = ft.OpenQuoteContext(host='198.13.60.168', port=11111)
 
 # 沪深A股
-hs = q.get_plate_stock('SH.3000005')
+hs = q.get_plate_stock('SH.3000005')[1]
+
+hs['code'] = hs[1]['code'].map(lambda x: x[3:])
 
 # 富途牛牛Code
-ftcode_dict = hs[1].set_index('code').drop(columns=['stock_owner','stock_name', 'lot_size', 'stock_child_type', 'stock_type', 'list_time']).T.to_dict('records')[0]
+ftcode_dict = hs.set_index('code').drop(columns=['stock_owner','stock_name', 'lot_size', 'stock_child_type', 'stock_type', 'list_time']).T.to_dict('records')[0]
 
 # DataFrame
 df = pd.DataFrame(columns=['code','last_4_average','price', 'ratio'])
