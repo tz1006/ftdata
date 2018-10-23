@@ -14,20 +14,27 @@ import json
 
 ########--Tools--########
 
+
+def ccode(ftcode):
+    code = ftcode[-6:]
+    return code
+
+
+
 def ftcode(code):
     if code[0]+code[1] =='60':
-        code = 'SH.' + code
+        ftcode = 'SH.' + code
     else:
-        code = 'SZ.' + code
-    return code
+        ftcode = 'SZ.' + code
+    return ftcode
 
 
 def sscode(code):
     if code[0]+code[1] =='60':
-        code = 'sh%s' % code
+        sscode = 'sh%s' % code
     else:
-        code = 'sz%s' % code
-    return code
+        sscode = 'sz%s' % code
+    return sscode
 
 
 def stock_name(code):
