@@ -4,6 +4,7 @@
 # version: 0.0.1
 # description: futu.py
 
+from tqdm import tqdm
 import pandas as pd
 import futuquant as ft
 
@@ -26,21 +27,28 @@ df = pd.DataFrame(columns=['code','last_4_average','last_9_average'])
 
 
 def init_df():
-    for i in ftcode_dict:
+    print('初始化df...')
+    # 除去当日停牌以及刚上市股票(数据)
+    # 插入MA初始值(数据)
+    for i in tqdm(ftcode_dict):
         df_insert_ma(i)
+    # 去除MA不符合条件(计算)
 
-def update_df():
-    
-    
+
+#def update_df():
+
 def df_insert_ma(ftcode):
     try:
         # 去除停牌
         suspension = False
         if suspension == False:
             code = ccode(ftcode)
-            last_4_average = q.request_history_kline(ftcode, start='2017-06-20', end='2019-06-22', max_count=4)[1]['close'].mean()
-            last_9_average = q.request_history_kline(ftcode, start='2017-06-20', end='2019-06-22', max_count=9)[1]['close'].mean()
+            #print(code)
+            last_4_average = q.get_history_kline(ftcode, start='2018-08-20', end='2019-06-22')[1][-4:]['close'].mean()
+            #print(last_4_average)
+            last_9_average = q.get_history_kline(ftcode, start='2018-08-20', end='2019-06-22')[1][-9:]['close'].mean()
+            #print(last_9_average)
             df.loc[len(df)] = [code, last_4_average, last_9_average]
-            print('添加(%s, %s, %s)' % (code, last_4_average,last_9_average))
+            #print('添加(%s, %s, %s)' % (code, last_4_average,last_9_average))
     except:
         print(ftcode)
