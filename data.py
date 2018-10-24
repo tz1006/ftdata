@@ -22,7 +22,7 @@ hs['code'] = hs[1]['code'].map(lambda x: x[3:])
 ftcode_dict = hs.set_index('code').drop(columns=['stock_owner','stock_name', 'lot_size', 'stock_child_type', 'stock_type', 'list_time']).T.to_dict('records')[0]
 
 # DataFrame
-df = pd.DataFrame(columns=['code','last_4_average','last_9_average'])
+df = pd.DataFrame(columns=['code', 'name', 'last_4_average','last_9_average'])
 
 
 
@@ -38,17 +38,19 @@ def init_df():
 #def update_df():
 
 def df_insert_ma(ftcode):
-    try:
-        # 去除停牌
-        suspension = False
-        if suspension == False:
-            code = ccode(ftcode)
-            #print(code)
-            last_4_average = q.get_history_kline(ftcode, start='2018-08-20', end='2019-06-22')[1][-4:]['close'].mean()
-            #print(last_4_average)
-            last_9_average = q.get_history_kline(ftcode, start='2018-08-20', end='2019-06-22')[1][-9:]['close'].mean()
-            #print(last_9_average)
-            df.loc[len(df)] = [code, last_4_average, last_9_average]
-            #print('添加(%s, %s, %s)' % (code, last_4_average,last_9_average))
-    except:
-        print(ftcode)
+    # code = ccode(ftcode)
+    print(ftcode)
+    nls = name_listing_suspension(ftcode)
+    name = nls[0]
+    listing = nls[1]
+    suspension = nls[2]
+    # 去除停牌
+    if suspension == False:
+        average_data = closing_average(ftcode)
+        last_4_average = average_data[0]
+        last_9_average = average_data[1]
+        df.loc[len(df)] = [ftcode, name, last_4_average, last_9_average]
+        #print('添加(%s, %s, %s)' % (code, last_4_average,last_9_average))
+
+    
+    
