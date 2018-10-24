@@ -41,7 +41,11 @@ def name_listing_suspension(ftcode):
     data = get_stock_basicinfo(ftcode)
     name = data['name'].to_string(index=False)
     listing_date = data['listing_date'].to_string(index=False)
-    suspension = data['suspension']
+    suspension = data['suspension'].to_string(index=False)
+    if suspension == 'N/A':
+        suspension = False
+    else:
+        suspension = True
     #stock_id = data['stock_id']
     #delisting = data['delisting']
     info = [name, listing_date, suspension]
