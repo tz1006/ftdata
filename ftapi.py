@@ -31,9 +31,29 @@ def get_stock_basicinfo(ftcode):
 
 # 二次API                       
                         
-def closing_average(ftcode, day):
+def closing_average(ftcode):
     kline = q.get_history_kline(ftcode)[1]
-    average = kline[-day:]['close'].mean()
+    try:
+        average_4 = kline[-4:]['close'].mean()
+    except:
+        average_4 = None
+    try:
+        average_9 = kline[-9:]['close'].mean()
+    except:
+        average_9 = None
+    try:
+        average_19 = kline[-19:]['close'].mean()
+    except:
+        average_19 = None
+    try:
+        average_29 = kline[-29:]['close'].mean()
+    except:
+        average_29 = None
+    try:
+        average_59 = kline[-59:]['close'].mean()
+    except:
+        average_59 = None
+    average = [average_4, average_9, average_19, average_29, average_59]
     return average
 
                         
