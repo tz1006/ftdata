@@ -59,7 +59,7 @@ def group(li, n):
         g.append(i * n)
     g.append(len(li))
     for i in range(len(g)-1):
-        sublist = a[g[i]:g[i+1]]
+        sublist = li[g[i]:g[i+1]]
         result.append(sublist)
     return result
 
