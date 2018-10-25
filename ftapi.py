@@ -14,7 +14,24 @@ from ftid import ftid
 
 import futuquant as ft
 
+
+
+# 准备
 q = ft.OpenQuoteContext(host='sz.omg.tf', port=11111)
+
+lines = [q,b,c,d]
+
+ftcode_dict = q.get_plate_stock('SH.3000005')[1].set_index('code').drop(columns=['stock_owner','stock_name', 'lot_size', 'stock_child_type', 'stock_type', 'list_time']).T.to_dict('records')[0]
+stock_gourps = group(list(ftcode_dict),100)
+groups_dict = { i : 9 for i in lines}
+groups_dict.fromkeys(stock_gourps, 1)
+def subscribe_all():
+    groups = list(stock_gourps)
+    for line in lines:
+        line.subscribe(groups[0], [SubType.QUOTE])
+        groups_dict
+
+
 
 # 一次API
 
@@ -28,6 +45,39 @@ def get_stock_basicinfo(ftcode):
     return data
 
 
+def quote_basic(ftcode):
+    # generate URL
+    security_id = ftcode_dict[ftcode]
+    timestamp = int(time.time() * 1000)
+    url = 'https://www.futunn.com/trade/quote-basic-v3?security_id=%s&_=%s' % (security_id, timestamp)
+    #print(url)
+    # web
+    s = requests.session()
+    s.headers['Connection'] = 'close'
+    s.headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+    r = None
+    while r == None:
+        r = s.get(url)
+    # data
+    data = r.json()['data']
+    try:
+        price = data['one_queue']['ask_price']
+    except:
+        price = None
+    change = float(data['quote']['change'])
+    ratio = float(data['quote']['change_ratio'][:-1])
+    buysell = float(data['quote']['buysell_ratio'][:-1])
+    # info
+    info = {'price': price,
+            'change': change, 
+            'ratio': ratio,
+            'buysell': buysell }
+    return info
+
+def get_stock_quote(ftcode):
+    ctx = 
+    data = ctx.get_stock_quote(all_stocks2)
+    price = 
 
 # 二次API                       
                         
