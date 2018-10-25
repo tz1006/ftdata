@@ -35,7 +35,14 @@ def init_df():
     # 去除MA不符合条件(计算)
 
 
-#def update_df():
+def update_df():
+    for i in df['code']:
+        price = 
+        # 修改数据
+        df.at[df[df['code'].isin([i])].index, 'price'] = price
+
+
+
 
 def df_insert_ma(ftcode):
     # print(ftcode)
