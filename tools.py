@@ -46,4 +46,22 @@ def stock_name(code):
     return name
 
 
+#
+
+
+def group(li, n):
+    result = []
+    k, m = divmod(len(li), n)
+    g = []
+    g.append(0)
+    for i in range(k):
+        i = i + 1
+        g.append(i * n)
+    g.append(len(li))
+    for i in range(len(g)-1):
+        sublist = a[g[i]:g[i+1]]
+        result.append(sublist)
+    return result
+
+
 
