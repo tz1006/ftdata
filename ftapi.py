@@ -25,12 +25,18 @@ ftcode_dict = q.get_plate_stock('SH.3000005')[1].set_index('code').drop(columns=
 stock_gourps = group(list(ftcode_dict),100)
 groups_dict = { i : 9 for i in lines}
 groups_dict.fromkeys(stock_gourps, 1)
+
+
 def subscribe_all():
-    groups = list(stock_gourps)
+    for line in lines:
+        line.unsubscribe([list(ftcode_dict)], [SubType.QUOTE])
+        print(line.query_subscription(is_all_conn=True))
+   # groups = list(stock_gourps)
     for line in lines:
         line.subscribe(groups[0], [SubType.QUOTE])
         groups_dict
 
+# 工具
 
 
 # 一次API
@@ -121,6 +127,8 @@ def name_listing_suspension(ftcode):
     info = [name, listing_date, suspension]
     return info
 
+
+def
 
 # 参数
 
